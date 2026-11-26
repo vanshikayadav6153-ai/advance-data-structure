@@ -1,0 +1,81 @@
+#include <iostream>
+using namespace std;
+struct node
+{
+    node *next[26];
+    int we;
+};
+node *MakeNode()
+{
+    node *p = new node;
+
+    for (int i = 0; i < 26; i++)
+    {
+        p->next[i] = NULL;
+    }
+
+    p->we = 0;
+    return p;
+}
+node *TrieInsert(node *root, string str)
+{
+    node *p, *T;
+    T = root;
+
+    for (auto c : str)
+    {
+        int x = c - 'a';
+
+        if (T->next[x] != NULL)
+            T = T->next[x];
+        else
+        {
+            p = MakeNode();
+            T->next[x] = p;
+            T = p;
+        }
+    }
+
+    T->we = 1;
+    return root;
+}
+bool TrieSearch(node *root, string str)
+{
+    node *T;
+    T = root;
+
+    for (auto c : str)
+    {
+        int x = c - 'a';
+
+        if (T->next[x] == NULL)
+            return false;
+
+        T = T->next[x];
+    }
+
+    if (T->we == 1)
+        return true;
+    else
+        return false;
+}
+int main()
+{
+    node *root;
+    root = MakeNode();
+
+    root = TrieInsert(root, "apple");
+    root = TrieInsert(root, "ability");
+    root = TrieInsert(root, "apply");
+    root = TrieInsert(root, "ball");
+    root = TrieInsert(root, "bay");
+    root = TrieInsert(root, "way");
+    root = TrieInsert(root, "wine");
+    root = TrieInsert(root, "text");
+    root = TrieInsert(root, "towards");
+    root = TrieInsert(root, "title");
+    root = TrieInsert(root, "son");
+    root = TrieInsert(root, "soon");
+    cout << TrieSearch(root, "apple") << endl;
+    return 0;
+}
